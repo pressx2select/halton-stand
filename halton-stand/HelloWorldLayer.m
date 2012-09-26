@@ -36,7 +36,7 @@
 	if( (self=[super init]) ) {
 		
 		// create and initialize a Label
-		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Hello World" fontName:@"Marker Felt" fontSize:64];
+		CCLabelTTF *label = [CCLabelTTF labelWithString:@"It's alive!!!" fontName:@"Marker Felt" fontSize:64];
 
 		// ask director for the window size
 		CGSize size = [[CCDirector sharedDirector] winSize];
@@ -46,6 +46,38 @@
 		
 		// add the label as a child to this Layer
 		[self addChild: label];
+        
+        
+        
+        
+        
+        
+        [[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"halton.plist"];
+        CCSpriteBatchNode *spriteSheet = [CCSpriteBatchNode batchNodeWithFile:@"halton.png"];
+        [self addChild:spriteSheet];
+        
+        NSMutableArray *animFrames = [NSMutableArray array];
+        for (int i = 1; i <= 2; i++) {
+            NSString *file = [NSString stringWithFormat:@"halton%d.png", i];
+            CCSpriteFrame *frame = [[CCSpriteFrameCache sharedSpriteFrameCache] spriteFrameByName:file];
+            [animFrames addObject:frame];
+            
+        }
+        
+        CCSprite *player = [CCSprite spriteWithSpriteFrameName:@"halton1.png"];		
+        player.position = ccp(200, 150);
+        player.scale =2.0;
+        [player.texture setAliasTexParameters];
+        [spriteSheet addChild:player];
+        
+        CCAnimation *anim = [CCAnimation animationWithSpriteFrames:animFrames delay:0.30f];
+        CCRepeatForever *repeat = [CCRepeatForever actionWithAction:[CCAnimate actionWithAnimation:anim]];
+        //        CCAction *moveAction = [CCMoveBy actionWithDuration:2.0f position:CGPointMake(500.0f,0.0f)];
+        
+        [player runAction:repeat];
+        //        [player runAction:moveAction];
+        
+        
 	}
 	return self;
 }
